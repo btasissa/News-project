@@ -140,6 +140,29 @@ class Newspaper:
             return "Positive"
         return "Negative"
 
+    def get_frequent_words(self, article: Article, number_of_words):
+        """this method will count most frequently used words in the article
+        param: article object, number of words to return
+        return: A list of the top number_of_words words sorted by frequency
+        """
+        stopwords = nltk.corpus.stopwords.words("english")
+        words = nltk.word_tokenize(article.text)
+        content = [
+            w.lower()
+            for w in words
+            if w.lower() not in stopwords and w not in punctuation and len(w) > 1
+        ]
+        word_freq = dict()
+        for word in content:
+            if word in word_freq:
+                word_freq[word] += 1
+            else:
+                word_freq[word] = 1
+        result = sorted(word_freq, key=lambda x: word_freq[x], reverse=True)[
+            :number_of_words
+        ]
+        return result
+
     def get_people(self, article: Article):
         """this method uses nltk's named entity chunking to gather names of people and proper nouns
         param: article object
