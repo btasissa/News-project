@@ -139,6 +139,19 @@ class Newspaper:
         if sentiment_scores["compound"] > 0:
             return "Positive"
         return "Negative"
+
+    def get_people(self, article: Article):
+        """this method uses nltk's named entity chunking to gather names of people and proper nouns
+        param: article object
+        return: A list of people mentioned in the article
+        """
+        people = []
+        for sent in nltk.sent_tokenize(article.text):
+            for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):
+                if hasattr(chunk, "label") and chunk.label() == "PERSON":
+                    people.append(" ".join(c[0] for c in chunk.leaves()))
+        return people
+    
 def main():
     """this method is the driver of the Newspaper class"""
     print("Welcome to the Newspaper Aggregator Project. \n"
