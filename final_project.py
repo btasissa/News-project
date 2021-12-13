@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
+from nltk import sentiment
+from string import punctuation
+import nltk
 
 
 class Newspaper:
@@ -126,7 +129,16 @@ class Newspaper:
                         """
         return self.section
 
-
+    def get_sentiment(self, article: Article):
+        """this method will determine if the article expresses overall positive or negative
+        param: article object
+        return: The overall sentiment. Positive or negative
+        """
+        sia = sentiment.SentimentIntensityAnalyzer()
+        sentiment_scores = sia.polarity_scores(article.text)
+        if sentiment_scores["compound"] > 0:
+            return "Positive"
+        return "Negative"
 def main():
     """this method is the driver of the Newspaper class"""
     print("Welcome to the Newspaper Aggregator Project. \n"
