@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
+from nltk import sentiment
+from string import punctuation
+import nltk
 
 
 class Newspaper:
@@ -14,7 +17,7 @@ class Newspaper:
         """
         this method will extract the sections from NYT website and ask the user to select the section and modify
         the url attribute accordingly
-        return: None
+        return: Non
         """
         page = requests.get(self.url)
         page_soup = BeautifulSoup(page.content, 'html.parser')
@@ -73,6 +76,8 @@ class Newspaper:
         param: article object
         return: title
         """
+        title = article.title
+        return title
 
     def get_article_url(self, article):
         """this method will return the url of article
@@ -80,17 +85,25 @@ class Newspaper:
                 return: url
                 """
 
+        article_url = article.url
+        return article_url
+
     def get_authors(self, article):
         """this method will return the list of authors of article
         param: article object
         return: authors
         """
 
+        authors = article.authors
+        return authors
+
     def get_publish_date(self, article):
         """this method will return the publish date of article
             param: article object
             return: publish date
             """
+        published_date = str(article.publish_date.strftime("%m/%d/%Y"))
+        return published_date
 
     def get_summary(self,article):
         """this method will return the summary of article
@@ -100,12 +113,45 @@ class Newspaper:
         summary = article.summary
         return summary
 
+    def get_images(self,article):
+        """this method will return the list of urls of images of article
+                param: article object
+                return: list of images url
+                """
+        top_image = str(article.top_image)
+        images = list(article.images)
+        images.append(top_image)
+        return images
 
     def get_articles_section(self):
         """this method will return the section of NYT
                         return: section
                         """
         return self.section
+
+    def get_sentiment(self, article: Article):
+        """this method will determine if the article expresses overall positive or negative
+        param: article object
+        return: The overall sentiment. Positive or negative
+        """
+        sia = sentiment.SentimentIntensityAnalyzer()
+        sentiment_scores = sia.polarity_scores(article.text)
+        if sentiment_scores["compound"] > 0:
+            return "Positive"
+        return "Negative"
+
+    def get_people(self, article: Article):
+        """this method uses nltk's named entity chunking to gather names of people and proper nouns
+        param: article object
+        return: A list of people mentioned in the article
+        """
+        people = []
+        for sent in nltk.sent_tokenize(article.text):
+            for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):
+                if hasattr(chunk, "label") and chunk.label() == "PERSON":
+                    people.append(" ".join(c[0] for c in chunk.leaves()))
+        return people
+    
 def main():
     """this method is the driver of the Newspaper class"""
     print("Welcome to the Newspaper Aggregator Project. \n"
