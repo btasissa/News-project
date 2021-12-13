@@ -168,6 +168,7 @@ class Newspaper:
         param: article object
         return: A list of people mentioned in the article
         """
+        
         people = []
         for sent in nltk.sent_tokenize(article.text):
             for chunk in nltk.ne_chunk(nltk.pos_tag(nltk.word_tokenize(sent))):
