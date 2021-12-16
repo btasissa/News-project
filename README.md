@@ -20,3 +20,10 @@ News aggregator is the type of content aggregator, and content aggregator is bas
 * Change the current working directory to the location where you want to clone the repository.
 * Type git clone, and then paste the URL you copied earlier.
 * Press Enter to create your local clone.
+
+# Modules needed for this Project
+* request
+* bs4
+* newspaper
+* nltk
+* string
