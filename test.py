@@ -32,3 +32,20 @@ class Test(unittest.TestCase):
 
     def test_frequently_used_words(self):
         self.assertEqual(self.newspaper.get_frequent_words(self.article, 3), ['france', 'omicron', 'britain'])
+        
+
+    def test_get_people(self):
+        self.assertEqual(self.newspaper.get_people(self.article),
+                         ['Omicron', 'Jean Castex', 'Emmanuel Macron', 'Omicron'])
+
+    def test_get_sentiment(self):
+        self.assertEqual(self.newspaper.get_sentiment(self.article), "Negative")
+        
+    # sections and get_articles_url cannot be tested automatically because 
+    # sections method handle user interaction to select the section and
+    # get_articles_url method extract all the articles url related to specific section and every day articles change for every section
+
+
+if __name__ == '__main__':
+    unittest.main()
+
