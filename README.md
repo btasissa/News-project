@@ -27,3 +27,8 @@ News aggregator is the type of content aggregator, and content aggregator is bas
 * newspaper
 * nltk
 * string
+
+# Run the Project
+* Open cmd in the location where you have you code file
+* check if you have proper internet
+* Type this command in the cmd: python final_project.py
